@@ -1,6 +1,7 @@
 
 /*
  * *** YOUR NAME GOES HERE / YOUR SECTION NUMBER ***
+ * *** Edgar Sanchez / 002 ***
  *
  * This java file is a Java object implementing simple AVL Tree.
  * You are to complete the deleteElement method.
@@ -361,7 +362,40 @@ class LUC_AVLTree {
          * code for each. You can also look at the method InsertElement, as it has do
          * do many of the same things as this method.
          */
+        /*/ first case: node is a leaf, return null
+        if (node.data == value) {
+            if (getHeight(node) == 0) {
+                return null;
+            }
+            // second case: node is interior with left only subtree
+            if (getbalanceFactor(node) > 1) {
+                // remove node by moving the next one up
+                node = node.left;
+                // if the new node is off balance, do the appropriate rotation
 
+            }
+            // third case: node is interior with a right only subtree
+            if (getBalanceFactor(node) < -1) {
+                node = node
+            }
+        } */
+       // Try #2
+       // Pre order - Check, Recurse Left, Recurse Right
+       if (node.data == value) {
+        // case 1: the node is a leaf, return null
+        if (node.height == 0) {
+            return null;
+        }
+        // case 2: the node has only left subtrees
+        if (node.leftChild != null && node.rightChild == null) {
+
+        }
+        // case 3: the node has only right subtrees
+        // case 4: the node has both right and left subtrees
+
+
+       }
+       
         return node;
     }
 
