@@ -387,14 +387,36 @@ class LUC_AVLTree {
             return null;
         }
         // case 2: the node has only left subtrees
-        if (node.leftChild != null && node.rightChild == null) {
-
-        }
         // case 3: the node has only right subtrees
+        if ((node.leftChild == null && node.rightChild != null) || (node.leftChild != null && node.rightChild == null)) {
+            // if the bf is positive, we are doing a RR or a RL rotation
+            if (getBalanceFactor(node) > 0) {
+                // check if we can just pull it up by getting the balance factor of the next child
+                if (getBalanceFactor(node.leftChild) > 0) {
+                    node = node.leftChild;
+                    RRRotation(node);
+                }
+                else {
+                    node = node.leftChild;
+                    RLRotation(node);
+                }
+            }
+            // else, we are doing a LL or a LR rotation. No need for another if
+            else {
+                if (getBalanceFactor(node.rightChild) < 0) {
+                    
+                }
+
+            }
+        }
         // case 4: the node has both right and left subtrees
 
 
        }
+       // recurse left
+       deleteElement(value, node.leftChild);
+       // recurse right
+       deleteElement(value,node.rightChild);
        
         return node;
     }
