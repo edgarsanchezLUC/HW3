@@ -170,7 +170,7 @@ class LUC_AVLTree {
         int leftMin  = minValue(node.leftChild);
         int rightMin = minValue(node.rightChild);
 
-        return Math.max(value, Math.max(leftMin, rightMin));
+        return Math.min(value, Math.min(leftMin, rightMin));
     }
 
 
@@ -363,7 +363,7 @@ class LUC_AVLTree {
          * do many of the same things as this method.
          */
         /*/ first case: node is a leaf, return null
-        if (node.data == value) {
+        if (node.value == value) {
             if (getHeight(node) == 0) {
                 return null;
             }
@@ -380,44 +380,67 @@ class LUC_AVLTree {
             }
         } */
        // Try #2
-       // Pre order - Check, Recurse Left, Recurse Right
-       if (node.data == value) {
-        // case 1: the node is a leaf, return null
-        if (node.height == 0) {
+       if (node == null) {
+        return null;
+       }
+       // if value is less than, we recurse left
+       if (value < node.value) {
+        node.leftChild = deleteElement(value, node.leftChild);
+       }
+       // if value is greater than, we recurse right
+       else if (value > node.value) {
+        node.rightChild = deleteElement(value, node.rightChild);
+       }
+       // else, we are in the correct node
+       else {
+        // case 1: we are in a leaf node
+        if (node.leftChild == null && node.rightChild == null) {
             return null;
         }
-        // case 2: the node has only left subtrees
-        // case 3: the node has only right subtrees
-        if ((node.leftChild == null && node.rightChild != null) || (node.leftChild != null && node.rightChild == null)) {
-            // if the bf is positive, we are doing a RR or a RL rotation
-            if (getBalanceFactor(node) > 0) {
-                // check if we can just pull it up by getting the balance factor of the next child
-                if (getBalanceFactor(node.leftChild) > 0) {
-                    node = node.leftChild;
-                    RRRotation(node);
-                }
-                else {
-                    node = node.leftChild;
-                    RLRotation(node);
-                }
-            }
-            // else, we are doing a LL or a LR rotation. No need for another if
-            else {
-                if (getBalanceFactor(node.rightChild) < 0) {
-                    
-                }
 
-            }
+        // case 2: there is 1 child node
+        else if (node.leftChild == null) {
+            return node.rightChild;
         }
-        // case 4: the node has both right and left subtrees
+        else if (node.rightChild == null) {
+            return node.leftChild;
+        }
 
-
+        // case 3: there are 2 child nodes
+        else {
+            // make temporary node to place the next node
+            // right 1 and left all the way
+            Node temp = minValueNode(node.rightChild);
+            // replace the current node with that node
+            node.value = temp.value;
+            // delete the node that we just moved up from the bottom
+            node.rightChild = deleteElement(temp.value, node.rightChild);
+        }
        }
-       // recurse left
-       deleteElement(value, node.leftChild);
-       // recurse right
-       deleteElement(value,node.rightChild);
+        // add 1 to the max height
+        node.height = 1 + Math.max(getHeight(node.leftChild), getHeight(node.rightChild));
+        // do balance rotations if needed
+        int balance = getBalanceFactor(node);
+        // LL rotation
+        // if the node is left heavy and the left child is heavy, do a LL rotation
+        if (balance > 1 && getBalanceFactor(node.leftChild) >= 0) {
+            return LLRotation(node);
+        }
+        // if the node is left heavy and the left child is right heavy, do a LR Rotation
+        if (balance > 1 && getBalanceFactor(node.leftChild) < 0) {
+            return LRRotation(node);
+        }
+        // do the same for the right side of the node
+        //if the node is right heavy and the right child is right heavy, do a RR rotation
+        if (balance < -1 && getBalanceFactor(node.rightChild) <= 0) {
+            return RRRotation(node);
+        }
+        // if the node is right heavy and right child is left heavy, do a RL rotation
+        if (balance < -1 && getBalanceFactor(node.rightChild) > 0) {
+            return RLRotation(node);
+        }
        
+    
         return node;
     }
 

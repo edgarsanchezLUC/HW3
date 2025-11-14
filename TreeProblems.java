@@ -1,6 +1,6 @@
 /*
  * *** YOUR NAME GOES HERE / YOUR SECTION NUMBER ***
- *
+ * *** Edgar Sanchez / 002 ***
  * This java file contains several simple tree problems that need to be
  * codified. These routines  must use the TreeMap and TreeSet library
  * classes from the Java Collection Framework.
@@ -22,12 +22,31 @@ public class TreeProblems {
   public static Set<Integer> different(Set<Integer> setA, Set<Integer> setB) {
 
     // INSERT CODE HERE - DO NOT FORGET TO PLACE YOUR NAME ABOVE
+
+    // make the set you will return
+      Set<Integer> different = new TreeSet<>();
+    
+    // add all the items in setA into the result set
+      different.addAll(setA);
+
+    // remove all items that are in setB from the result
+
+      different.removeAll(setB);
+
+    //make a temp to get all unique values in setB
+      Set<Integer> temp = new TreeSet<>(setB);
+    
+      temp.removeAll(setA);
+
+    // now add all items from temp into the result and return the result
+      different.addAll(temp);
+      return different;
+
+
     //
     // This can be done numerous ways, but once such will only that
     // *several* lines of code. Hint: create two temporary TreeSets and utilize the
     // methods retainAll(), addAll(), and removeAll(). But in the end, get something to work.
-
-    return setA;
   }
 
 
@@ -41,8 +60,17 @@ public class TreeProblems {
   public static void removeEven(Map<Integer, String> treeMap) {
 
     // INSERT CODE HERE.
-
-    return;
+    // make an iterator to go through all the keys
+    Iterator<Integer> i = treeMap.keySet().iterator();
+    // while we still have keys to go through, check if key%2 == 0 and delete if true
+    while (i.hasNext()) {
+      // get current key
+      int Key = i.next();
+      // if even, remove
+      if (Key % 2 == 0) {
+        i.remove();
+      }
+    }
   }
 
 
@@ -56,7 +84,14 @@ public class TreeProblems {
   public boolean treesEqual(Map<Integer, String> tree1,Map<Integer, String> tree2 ) {
 
     // INSERT CODE HERE
+    
+    // use the map function equals
+    // if tree1 is equal to tree2 return true
+    if (tree1.equals(tree2)) {
+      return true;
 
+    }
+    // otherwise return false
     return false;
 
   }
